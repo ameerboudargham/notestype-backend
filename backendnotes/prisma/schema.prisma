@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// whenever you change anything in the schema.prisma file you type generate bl console 
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String
+  notes    Note[]
+}
+
+model Note {
+  id       Int      @id @default(autoincrement())
+  title    String?
+  content  String
+  priority Int
+  category String   
+  dueDate  DateTime @default(now())
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id])
+}
+
+// this extension formats your code whenever you save 
